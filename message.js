@@ -1,4 +1,4 @@
-console.log('Hola desde otro mensaje!!!');
+console.log('Hola desde message.js!');
 
 export const name = 'Jose de Jesus';
 export const lastName = 'Useche Cuevas';
