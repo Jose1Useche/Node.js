@@ -1,7 +1,8 @@
 import yargsNPM from 'yargs';
 import { hideBin } from 'yargs/helpers';
-const yargs = yargsNPM(hideBin(process.argv));
 
+/*-----------------------------------------------------*/
+/*-----------------------------------------------------*/
 // const entrada = process.argv[2];
 
 // console.log(process.argv);
@@ -12,8 +13,11 @@ const yargs = yargsNPM(hideBin(process.argv));
     // } else {
         //     console.log('No eres ' + entrada);
         // }
-//*****************************************************
-//*****************************************************
+        
+/*-----------------------------------------------------*/
+/*-----------------------------------------------------*/
+
+const yargs = yargsNPM(hideBin(process.argv));
 // yargs.version('1.2.0');
 // console.log(yargs.argv);
         
