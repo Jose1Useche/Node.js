@@ -1,6 +1,8 @@
 import yargsNPM from 'yargs';
 import { hideBin } from 'yargs/helpers';
 
+import * as notes from './notes.js' ;
+
 /*-----------------------------------------------------*/
 /*-----------------------------------------------------*/
 // const entrada = process.argv[2];
@@ -39,8 +41,9 @@ yargs.command({
         }
     },
     handler: function() {
-        console.log('Titulo ', yargs.argv.titulo);
-        console.log('Contenido ', yargs.argv.body);
+        const title = yargs.argv.titulo;
+        const body = yargs.argv.body;
+        notes.addNotes(title, body);
     }
 });
 
