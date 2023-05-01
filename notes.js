@@ -1,12 +1,10 @@
 import fs from 'node:fs';
 import chalk from 'chalk';
 
-export const addNotes =  function(title, body) {
+export const addNotes = (title, body) => {
     const notes = loadNotes();
 
-    const duplicateNotes = notes.filter(n => {
-        return n.title.toLowerCase() === title.toLowerCase();
-    });
+    const duplicateNotes = notes.filter(n => n.title.toLowerCase() === title.toLowerCase());
 
     if (duplicateNotes.length === 0) {
         notes.push({
