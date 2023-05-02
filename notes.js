@@ -66,6 +66,8 @@ export const readNotes = title => {
 
     const note = loadNotes().find(n => n.title === title);
 
+    debugger;
+
     if (!note) {
         console.log(chalk.bgRed('No note found!'));
     } else {
