@@ -70,7 +70,7 @@ yargs.command({
     command: 'list',
     describe: 'List all the notes?',
     handler() {
-        console.log('Listing a note!');
+        notes.listNotes();
     }
 });
 
@@ -79,8 +79,15 @@ yargs.command({
 yargs.command({
     command: 'read',
     describe: 'Read a note',
+    builder: {
+        title: {
+            describe: 'Titulo de la nota a remover',
+            demandOption: true,
+            type: 'string'
+        }
+    },
     handler() {
-        console.log('Reading a note!');
+        notes.readNotes(yargs.argv.title);
     }
 });
 
