@@ -1,5 +1,14 @@
 import express from 'express';
+import path from 'node:path';
+import { fileURLToPath } from 'url'; //https://codingbeautydev.com/blog/javascript-dirname-is-not-defined-in-es-module-scope/
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const publicDirectoryPath = path.join(__dirname, 'public');
+
 const app = express();
+app.use(express.static(publicDirectoryPath)); 
 
 app.get('/', (req, res) => {
   res.send('Hello World');
