@@ -2,7 +2,10 @@ h1 {
     color: blue;
 }
 
-img {
+img { 
     height: 700px;
-    /* width: 500px; */
+}
+
+p {
+    color: green;
 }

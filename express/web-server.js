@@ -2,16 +2,20 @@ import express from 'express';
 import path from 'node:path';
 import { fileURLToPath } from 'url'; //https://codingbeautydev.com/blog/javascript-dirname-is-not-defined-in-es-module-scope/
 
+const app = express();
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
 const publicDirectoryPath = path.join(__dirname, 'public');
 
-const app = express();
+app.set('view engine', 'hbs');
 app.use(express.static(publicDirectoryPath)); 
 
 app.get('/', (req, res) => {
-  res.send('Hello World');
+  res.render('index', {
+    title: 'Titulo de mi pagina',
+    name: 'Jose Useche'
+  });
 });
 
 app.get('/help', (req, res) => {
@@ -22,12 +26,16 @@ app.get('/help', (req, res) => {
 });
 
 app.get('/about', (req, res) => {
-  res.send(
-    {
-      name: 'Jose',
-      lastName: 'Useche'
-    }
-  );
+  res.render('about', {
+    title: 'About me:',
+    name: 'Jose Useche'
+  });
+  // res.send(
+  //   {
+  //     name: 'Jose',
+  //     lastName: 'Useche'
+  //   }
+  // );
 });
 
 app.get('/weather', (req, res) => {
