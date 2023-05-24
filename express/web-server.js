@@ -6,9 +6,12 @@ const app = express();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
 const publicDirectoryPath = path.join(__dirname, 'public');
+const viewsPath = path.join(__dirname, 'views-example');
 
 app.set('view engine', 'hbs');
+app.set('views', viewsPath);
 app.use(express.static(publicDirectoryPath)); 
 
 app.get('/', (req, res) => {
