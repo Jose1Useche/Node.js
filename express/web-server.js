@@ -1,5 +1,6 @@
 import express from 'express';
 import path from 'node:path';
+import hbs from 'hbs';
 import { fileURLToPath } from 'url'; //https://codingbeautydev.com/blog/javascript-dirname-is-not-defined-in-es-module-scope/
 
 const app = express();
@@ -7,11 +8,17 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Define paths for Express config
 const publicDirectoryPath = path.join(__dirname, 'public');
-const viewsPath = path.join(__dirname, 'views-example');
+const viewsPath = path.join(__dirname, 'views-example/views');
+const partialsPath = path.join(__dirname, 'views-example/partials');
 
+// Setup handlebars engine and views location
 app.set('view engine', 'hbs');
 app.set('views', viewsPath);
+hbs.registerPartials(partialsPath);
+
+// Setup static diretory to seerve
 app.use(express.static(publicDirectoryPath)); 
 
 app.get('/', (req, res) => {
@@ -22,10 +29,14 @@ app.get('/', (req, res) => {
 });
 
 app.get('/help', (req, res) => {
-  res.send(`<h1>
-                Help page
-            </h1>`
-          );
+  res.render('help', {
+    title: 'About me help:',
+    name: 'Jose Useche'
+  });
+  // res.send(`<h1>
+  //               Help page
+  //           </h1>`
+  //         );
 });
 
 app.get('/about', (req, res) => {
