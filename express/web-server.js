@@ -66,6 +66,24 @@ app.get('/weather', (req, res) => {
   ]);
 });
 
+app.get('/help/*', (req, res) => {
+  res.render('404-template', 
+  { 
+    title: 'Help error',
+    name: 'Jose Useche', 
+    errorMessage: 'Help article not found',
+  });
+});
+
+app.get('*', (req, res) => {
+  res.render('404-template', 
+  { 
+    title: 'General error',
+    name: 'Jose Useche', 
+    errorMessage: 'Page not found',
+  });
+});
+
 app.listen(3000,() => {
     console.log('Server is up on port 3000.');
 });
