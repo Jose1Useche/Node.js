@@ -70,7 +70,6 @@ app.get('/weather', (req, res) => {
     res.send({
       forecast: r.forecast,
       location: r.locationName,
-      address: req.query.address,
       latitude: r.latitude,
       longitude: r.longitude
     });
