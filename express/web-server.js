@@ -3,6 +3,8 @@ import path from 'node:path';
 import hbs from 'hbs';
 import { fileURLToPath } from 'url'; //https://codingbeautydev.com/blog/javascript-dirname-is-not-defined-in-es-module-scope/
 
+import * as foreCast from '../weather-app/app2.js';
+
 const app = express();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -41,7 +43,7 @@ app.get('/help', (req, res) => {
 
 app.get('/about', (req, res) => {
   res.render('about', {
-    title: 'About me:',
+    title: 'About me:', 
     name: 'Jose Useche'
   });
   // res.send(
@@ -53,19 +55,61 @@ app.get('/about', (req, res) => {
 });
 
 app.get('/weather', (req, res) => {
-  res.send([
-    {
-      name: 'Nohemi'
-    },
-    {
-      name: 'Maria'
-    },
-    {
-      name: 'Juan'
-    }
-  ]);
+  if(!req.query.address) {
+    return res.send({
+      error: 'You must provide an address'
+    });
+  }
+
+  console.log(req.query);
+  console.log(req.query.address);
+
+  foreCast.myForecast(req.query.address)
+  .then(r => {
+    console.log('Lo que devuelve mi promesa: ', r);
+    res.send({
+      forecast: r.forecast,
+      location: r.locationName,
+      address: req.query.address,
+      latitude: r.latitude,
+      longitude: r.longitude
+    });
+  })
+  .catch(() => {
+    res.send({
+      error: 'You send an incorrect address'
+    });
+  });
+
+
+  // res.send([
+  //   {
+  //     name: 'Nohemi'
+  //   },
+  //   {
+  //     name: 'Maria'
+  //   },
+  //   {
+  //     name: 'Juan'
+  //   }
+  // ]);
 });
 
+app.get('/products', (req, res) => {
+  if (!req.query.search) {
+    return res.send({
+      error: 'You must provide a search term'
+    });
+  } 
+  
+  console.log(req.query);
+
+  res.send({
+    products: []
+  });
+});
+
+// Enrutamiento 404
 app.get('/help/*', (req, res) => {
   res.render('404-template', 
   { 
