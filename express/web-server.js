@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'node:path';
 import { error } from 'node:console';
+import { ObjectId } from 'mongodb';
 import hbs from 'hbs';
 import { fileURLToPath } from 'url'; //https://codingbeautydev.com/blog/javascript-dirname-is-not-defined-in-es-module-scope/
 
@@ -140,12 +141,17 @@ app.get('/books', (req, res) => {
     .catch(() => {
       res.status(500).json({ error: 'Could not fetch the documents.' });
     });
+});
 
-  // res.send(
-  //   {
-  //     mssg: "welcome to the api"
-  //   }
-  // );
+app.get('/books/:id', (req, res) => {
+  db.collection('books')
+    .findOne({ _id: new ObjectId(req.params.id) })
+    .then(doc => {
+      res.status(200).json(doc);
+    })
+    .catch(() => {
+      res.status(500).json({ error: 'Could not fetch the document.' });
+    });
 });
 
 // Enrutamiento 404
