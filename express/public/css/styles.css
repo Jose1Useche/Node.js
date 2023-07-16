@@ -7,5 +7,9 @@ img {
 }
 
 p {
-    color: violet;
+    color: brown;
+}
+
+body {
+    background-color: lightslategrey;
 }

@@ -1,9 +1,11 @@
 import express from 'express';
 import path from 'node:path';
+import { error } from 'node:console';
 import hbs from 'hbs';
 import { fileURLToPath } from 'url'; //https://codingbeautydev.com/blog/javascript-dirname-is-not-defined-in-es-module-scope/
 
 import * as foreCast from '../weather-app/app2.js';
+import * as mongoDb from '../mongodb/mdb.js';
 
 const app = express();
 
@@ -107,6 +109,44 @@ app.get('/products', (req, res) => {
     products: []
   });
 });
+/********************************************************************/
+/********************************************************************/
+//db connection
+let db;
+
+mongoDb.connectToDb(err => {
+  if(!err) {
+    app.listen(3000,() => {
+        console.log('Server is up on port 3000.');
+    });
+
+    db = mongoDb.getDb();
+  } else {
+    throw error('ups, error al conectar...  :-(', err);
+  }
+});
+/********************************************************************/
+/********************************************************************/
+app.get('/books', (req, res) => {
+  let books = [];
+
+  db.collection('books')
+    .find()
+    // .sort({ author: 1 })
+    .forEach(book => books.push(book))
+    .then(() => {
+      res.status(200).json(books);
+    })
+    .catch(() => {
+      res.status(500).json({ error: 'Could not fetch the documents.' });
+    });
+
+  // res.send(
+  //   {
+  //     mssg: "welcome to the api"
+  //   }
+  // );
+});
 
 // Enrutamiento 404
 app.get('/help/*', (req, res) => {
@@ -127,6 +167,6 @@ app.get('*', (req, res) => {
   });
 });
 
-app.listen(3000,() => {
-    console.log('Server is up on port 3000.');
-});
+// app.listen(3000,() => {
+//     console.log('Server is up on port 3000.');
+// });
