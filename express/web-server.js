@@ -111,6 +111,7 @@ app.get('/products', (req, res) => {
   });
 });
 /********************************************************************/
+/***************************Mongodb START****************************/
 /********************************************************************/
 //db connection
 let db;
@@ -144,15 +145,37 @@ app.get('/books', (req, res) => {
 });
 
 app.get('/books/:id', (req, res) => {
+  if (ObjectId.isValid(req.params.id)) {
+    db.collection('books')
+      .findOne({ _id: new ObjectId(req.params.id) })
+      .then(doc => {
+        res.status(200).json(doc);
+      })
+      .catch(() => {
+        res.status(500).json({ error: 'Could not fetch the document.' });
+      });
+  } else {
+    res.status(500).json({ error: 'Not a valid doc id'})
+  }
+});
+
+app.use(express.json());
+
+app.post('/books', (req, res) => {
+  const book = req.body;
+
   db.collection('books')
-    .findOne({ _id: new ObjectId(req.params.id) })
-    .then(doc => {
-      res.status(200).json(doc);
+    .insertOne(book)
+    .then(result => {
+      res.status(201).json(result);
     })
     .catch(() => {
-      res.status(500).json({ error: 'Could not fetch the document.' });
-    });
+      res.status(500).json({ error: 'Could not create a new document'});
+    })
 });
+/********************************************************************/
+/*****************************Mongodb END****************************/
+/********************************************************************/
 
 // Enrutamiento 404
 app.get('/help/*', (req, res) => {
