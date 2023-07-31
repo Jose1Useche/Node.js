@@ -26,19 +26,19 @@ db.on('error', err => console.log('Error to connect: ',err));
 
 // Operaciones con Monggose
 // find()
-export const productList = async function(page, productsPerPage, modelToDeal) {
+export const productList = async (page, productsPerPage, modelToDeal) => {
     return await modelToDeal.find()
                             .skip(page * productsPerPage)
                             .limit(productsPerPage);
 }
 
 // findOne()
-export const productDocument = async function(id, modelToDeal) {
+export const productDocument = async (id, modelToDeal) => {
     return await modelToDeal.findOne({_id: id});
 }
 
 // insertOne()
-export const newProduct = async function(productParams, modelToDeal) {
+export const newProduct = async (productParams, modelToDeal) => {
     const product = new modelToDeal({
                                         name: productParams.name,
                                         description: productParams.description,
@@ -55,11 +55,28 @@ export const newProduct = async function(productParams, modelToDeal) {
 }
 
 // updateOne
-export const updateDocument = async function(id, updates, modelToDeal) {
+export const updateDocument = async (id, updates, modelToDeal) => {
     return await modelToDeal.updateOne({ _id: id }, { $set: updates });
 }
 
 // deleteOne()
-export const deleteDocument =  async function(id, modelToDeal) {
+export const deleteDocument =  async (id, modelToDeal) => {
     return await modelToDeal.deleteOne({_id: id});
+}
+
+// insertOne() ==> crear un nuevo usuario donde tenemos campos unicos y requeridos
+export const newUser = async (userParams, modelToDeal) => {
+    const user = new modelToDeal({
+                                    userName: userParams.userName,
+                                    email: userParams.email,
+                                    age: userParams.age
+                                });
+
+    return user.save()
+                .then(doc => {
+                    return doc;
+                })
+                .catch(err => {
+                    return err.message;
+                })
 }

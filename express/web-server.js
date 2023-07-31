@@ -236,6 +236,17 @@ app.post('/books', (req, res) => {
     })
 });
 
+//insertOne with Mongoose ==> crear un nuevo usuario donde tenemos campos unicos y requeridos
+app.post('/users', (req, res) => {
+  mongoose.newUser(req.body, models.User)
+    .then(result => {
+      res.status(201).json(result);
+    })
+    .catch(() => {
+      res.status(500).json({ error: 'Could not create a new document'});
+    })
+});
+
 // //updateOne with MongoDB
 // app.patch('/books/:id', (req, res) => {
 //   const updates = req.body;

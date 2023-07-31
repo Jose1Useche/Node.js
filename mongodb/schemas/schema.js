@@ -27,3 +27,13 @@ export const product = new Schema({
 
   // export const booksSchema = new Schema({}, { strict: false });
   export const booksSchema = new Schema({ any: {} });
+
+  export const userSchema = new Schema({
+    userName: String,
+    email: {
+      type: String,
+      unique: true,
+      required: true
+    },
+    age: Number
+  });
