@@ -1,4 +1,5 @@
 import { Schema } from 'mongoose';
+import validator from 'validator';
 
 export const product = new Schema({
     name: String,
@@ -33,7 +34,14 @@ export const product = new Schema({
     email: {
       type: String,
       unique: true,
-      required: true
+      required: true,
+      trim: true,
+      lowercase: true,
+      validate(value) {
+        if(!validator.isEmail(value)) {
+          throw new Error('Email is invalid');
+        }
+      }
     },
     age: Number
   });
