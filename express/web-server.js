@@ -1,16 +1,22 @@
 import express from 'express';
 import path from 'node:path';
 import { error } from 'node:console';
-import { ObjectId } from 'mongodb';
+// import { ObjectId } from 'mongodb';
 import hbs from 'hbs';
 import { fileURLToPath } from 'url'; //https://codingbeautydev.com/blog/javascript-dirname-is-not-defined-in-es-module-scope/
 
 import * as foreCast from '../weather-app/app2.js';
 // import * as mongoDb from '../mongodb/mdb.js';
 import * as mongoose from '../mongodb/mongoose.js';
-import * as models from '../mongodb/models/model.js';
+// import * as models from '../mongodb/models/model.js';
+import { userRouter } from './routers/user.js';
+import { bookRouter } from './routers/book.js';
 
 const app = express();
+app.use(userRouter);
+app.use(bookRouter);
+
+app.use(express.json());
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -164,19 +170,19 @@ mongoose.connectToDb(err => {
 //     });
 // });
 
-//find() Mongoose
-app.get('/books', (req, res) => {
-  const page = req.query.page || 0;
-  const productsPerPage = 3;
+// //find() Mongoose
+// app.get('/books', (req, res) => {
+//   const page = req.query.page || 0;
+//   const productsPerPage = 3;
 
-  mongoose.productList(page, productsPerPage, models.Product)
-    .then(data => {
-      res.status(200).json(data);
-    })
-    .catch(() => {
-      res.status(500).json({ error: 'Could not fetch the documents.' });
-    });
-});
+//   mongoose.productList(page, productsPerPage, models.Product)
+//     .then(data => {
+//       res.status(200).json(data);
+//     })
+//     .catch(() => {
+//       res.status(500).json({ error: 'Could not fetch the documents.' });
+//     });
+// });
 
 // //findOne() MongoDB
 // app.get('/books/:id', (req, res) => {
@@ -194,22 +200,22 @@ app.get('/books', (req, res) => {
 //   }
 // });
 
-//findOne() Mongoose
-app.get('/books/:id', (req, res) => {
-  if (ObjectId.isValid(req.params.id)) {
-    mongoose.productDocument(req.params.id, models.Product)
-      .then(data => {
-        res.status(200).json(data);
-      })
-      .catch(() => {
-        res.status(500).json({ error: 'Could not fetch the documents.' });
-      });
-  } else {
-    res.status(500).json({ error: 'Not a valid doc id'});
-  }
-});
+// //findOne() Mongoose
+// app.get('/books/:id', (req, res) => {
+//   if (ObjectId.isValid(req.params.id)) {
+//     mongoose.productDocument(req.params.id, models.Product)
+//       .then(data => {
+//         res.status(200).json(data);
+//       })
+//       .catch(() => {
+//         res.status(500).json({ error: 'Could not fetch the documents.' });
+//       });
+//   } else {
+//     res.status(500).json({ error: 'Not a valid doc id'});
+//   }
+// });
 
-app.use(express.json());
+
 
 // //insertOne with MongoDB
 // app.post('/books', (req, res) => {
@@ -225,27 +231,27 @@ app.use(express.json());
 //     })
 // });
 
-//insertOne with Mongoose
-app.post('/books', (req, res) => {
-  mongoose.newProduct(req.body, models.Product)
-    .then(result => {
-      res.status(201).json(result);
-    })
-    .catch(() => {
-      res.status(500).json({ error: 'Could not create a new document'});
-    })
-});
+// //insertOne with Mongoose
+// app.post('/books', (req, res) => {
+//   mongoose.newProduct(req.body, models.Product)
+//     .then(result => {
+//       res.status(201).json(result);
+//     })
+//     .catch(() => {
+//       res.status(500).json({ error: 'Could not create a new document'});
+//     })
+// });
 
-//insertOne with Mongoose ==> crear un nuevo usuario donde tenemos campos unicos y requeridos
-app.post('/users', (req, res) => {
-  mongoose.newUser(req.body, models.User)
-    .then(result => {
-      res.status(201).json(result);
-    })
-    .catch(() => {
-      res.status(500).json({ error: 'Could not create a new document'});
-    })
-});
+// //insertOne with Mongoose ==> crear un nuevo usuario donde tenemos campos unicos y requeridos
+// app.post('/users', (req, res) => {
+//   mongoose.newUser(req.body, models.User)
+//     .then(result => {
+//       res.status(201).json(result);
+//     })
+//     .catch(() => {
+//       res.status(500).json({ error: 'Could not create a new document'});
+//     })
+// });
 
 // //updateOne with MongoDB
 // app.patch('/books/:id', (req, res) => {
@@ -266,22 +272,22 @@ app.post('/users', (req, res) => {
 //   }
 // });
 
-//updateOne with Mongoose
-app.patch('/books/:id', (req, res) => {
-  const updates = req.body;
+// //updateOne with Mongoose
+// app.patch('/books/:id', (req, res) => {
+//   const updates = req.body;
 
-  if (ObjectId.isValid(req.params.id)) {
-    mongoose.updateDocument(req.params.id, updates, models.Product)
-      .then(result => {
-        res.status(200).json(result);
-      })
-      .catch(() => {
-        res.status(500).json({ error: 'Could not update the document.' });
-      });
-  } else {
-    res.status(500).json({ error: 'Not a valid doc id'});
-  }
-});
+//   if (ObjectId.isValid(req.params.id)) {
+//     mongoose.updateDocument(req.params.id, updates, models.Product)
+//       .then(result => {
+//         res.status(200).json(result);
+//       })
+//       .catch(() => {
+//         res.status(500).json({ error: 'Could not update the document.' });
+//       });
+//   } else {
+//     res.status(500).json({ error: 'Not a valid doc id'});
+//   }
+// });
 
 // //deleteOne with MongoDB
 // app.delete('/books/:id', (req, res) => {
@@ -299,20 +305,20 @@ app.patch('/books/:id', (req, res) => {
 //   }
 // });
 
-//deleteOne with Mongoose
-app.delete('/books/:id', (req, res) => {
-  if (ObjectId.isValid(req.params.id)) {
-    mongoose.deleteDocument(req.params.id, models.Product)
-    .then(result => {
-      res.status(200).json(result);
-    })
-    .catch(() => {
-      res.status(500).json({ error: 'Could not delete the document.' });
-    });
-  } else {
-    res.status(500).json({ error: 'Not a valid doc id'})
-  }
-});
+// //deleteOne with Mongoose
+// app.delete('/books/:id', (req, res) => {
+//   if (ObjectId.isValid(req.params.id)) {
+//     mongoose.deleteDocument(req.params.id, models.Product)
+//     .then(result => {
+//       res.status(200).json(result);
+//     })
+//     .catch(() => {
+//       res.status(500).json({ error: 'Could not delete the document.' });
+//     });
+//   } else {
+//     res.status(500).json({ error: 'Not a valid doc id'})
+//   }
+// });
 /********************************************************************/
 /*****************************Mongodb END****************************/
 /********************************************************************/

@@ -45,13 +45,13 @@ export const newProduct = async (productParams, modelToDeal) => {
                                         price: productParams.price
                                      });
 
-    return product.save()
-                  .then(doc => {
-                    return doc;
-                  })
-                  .catch(err => {
-                    return err.message;
-                  })
+    return await product.save()
+                        .then(doc => {
+                            return doc;
+                        })
+                        .catch(err => {
+                            return err.message;
+                        });
 }
 
 // updateOne
