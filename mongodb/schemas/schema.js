@@ -1,5 +1,6 @@
 import { Schema } from 'mongoose';
 import validator from 'validator';
+import bcrypt from 'bcryptjs';
 
 export const product = new Schema({
     name: String,
@@ -43,5 +44,26 @@ export const product = new Schema({
         }
       }
     },
+    password: {
+      type: String,
+      required: true
+    },
     age: Number
+  });
+
+  userSchema.pre('save', async function(next) {
+    if(this.isModified('password')) {
+      this.password = await bcrypt.hash(this.password, 8);
+    }
+    next();
+  });
+
+  userSchema.pre('updateOne', async function(next) {
+    const query = this.getUpdate();
+
+    if(query.$set.password) {
+      query.$set.password = await bcrypt.hash(query.$set.password, 8);
+    }
+
+    next();
   });

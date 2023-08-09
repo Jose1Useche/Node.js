@@ -68,6 +68,7 @@ export const deleteDocument =  async (id, modelToDeal) => {
 export const newUser = async (userParams, modelToDeal) => {
     const user = new modelToDeal({
                                     userName: userParams.userName,
+                                    password: userParams.password,
                                     email: userParams.email,
                                     age: userParams.age
                                 });
