@@ -1,6 +1,5 @@
 import express from "express";
 import { ObjectId } from 'mongodb';
-// import bcrypt from 'bcryptjs';
 import * as mongoose from '../../mongodb/mongoose.js';
 import { User } from "../../mongodb/models/model.js";
 
@@ -48,3 +47,13 @@ userRouter.delete('/users/:id', (req, res) => {
       res.status(500).json({ error: 'Not a valid doc id'})
   }
 });
+
+// login
+userRouter.post('/users/login', async (req, res) => {
+  try {
+    const userLogin =  await User.validaIngresoUsuario(req.body.email, req.body.password);
+    res.send('Welcome ' + userLogin.userName);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+}); 

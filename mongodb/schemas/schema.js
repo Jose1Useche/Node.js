@@ -1,6 +1,7 @@
 import { Schema } from 'mongoose';
 import validator from 'validator';
 import bcrypt from 'bcryptjs';
+import { login } from '../models/functions/userFunctions.js';
 
 export const product = new Schema({
     name: String,
@@ -51,6 +52,7 @@ export const product = new Schema({
     age: Number
   });
 
+  //Middlewares
   userSchema.pre('save', async function(next) {
     if(this.isModified('password')) {
       this.password = await bcrypt.hash(this.password, 8);
@@ -67,3 +69,6 @@ export const product = new Schema({
 
     next();
   });
+
+   //Static functions
+   userSchema.statics.validaIngresoUsuario = login;
