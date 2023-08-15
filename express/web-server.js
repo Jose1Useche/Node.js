@@ -13,6 +13,19 @@ import { userRouter } from './routers/user.js';
 import { bookRouter } from './routers/book.js';
 
 const app = express();
+
+//---------------------Middleware from express---------------------//
+app.use((req, res, next) => {
+  console.log(req.method, req.path);
+
+  if (req.method === 'GET') {
+    res.send('GET requests are disabled');
+  } else {
+    next();
+  }
+});
+//-----------------------------------------------------------------//
+
 app.use(userRouter);
 app.use(bookRouter);
 
@@ -34,6 +47,7 @@ hbs.registerPartials(partialsPath);
 // Setup static diretory to seerve
 app.use(express.static(publicDirectoryPath)); 
 
+// RESTful API's
 app.get('/', (req, res) => {
   res.render('index', {
     title: 'Titulo de mi pagina',
