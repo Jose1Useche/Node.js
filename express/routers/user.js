@@ -51,8 +51,11 @@ userRouter.delete('/users/:id', (req, res) => {
 // login
 userRouter.post('/users/login', async (req, res) => {
   try {
-    const userLogin =  await User.validaIngresoUsuario(req.body.email, req.body.password);
-    res.send('Welcome ' + userLogin.userName);
+    const user =  await User.validaIngresoUsuario(req.body.email, req.body.password);
+
+    const token = await user.generateToken();
+
+    res.send({user: user.userName, token});
   } catch (error) {
     res.status(400).send(error.message);
   }
