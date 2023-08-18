@@ -2,6 +2,7 @@ import express from "express";
 import { ObjectId } from 'mongodb';
 import * as mongoose from '../../mongodb/mongoose.js';
 import { User } from "../../mongodb/models/model.js";
+import { auth } from "../middlewares/auth.js";
 
 export const userRouter = new express.Router();
 userRouter.use(express.json());
@@ -60,3 +61,15 @@ userRouter.post('/users/login', async (req, res) => {
     res.status(400).send(error.message);
   }
 }); 
+
+//GET
+userRouter.get('/users/me', auth, async (req, res) => {
+  res.send(req.user);
+  
+  // try {
+  //   const users = await User.find({}, {password: 0});
+  //   res.send(users);
+  // } catch (error) {
+  //   res.status(500).send(error.message)    ;
+  // }
+});

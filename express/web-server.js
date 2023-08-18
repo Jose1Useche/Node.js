@@ -15,15 +15,15 @@ import { bookRouter } from './routers/book.js';
 const app = express();
 
 //---------------------Middleware from express---------------------//
-app.use((req, res, next) => {
-  console.log(req.method, req.path);
+// app.use((req, res, next) => {
+//   console.log(req.method, req.path);
 
-  if (req.method === 'GET') {
-    res.send('GET requests are disabled');
-  } else {
-    next();
-  }
-});
+//   if (req.method === 'GET') {
+//     res.send('GET requests are disabled');
+//   } else {
+//     next();
+//   }
+// });
 //-----------------------------------------------------------------//
 
 app.use(userRouter);
