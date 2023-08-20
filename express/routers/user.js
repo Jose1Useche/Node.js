@@ -56,7 +56,9 @@ userRouter.post('/users/login', async (req, res) => {
 
     const token = await user.generateToken();
 
-    res.send({user: user.userName, token});
+    // res.send({user: user.getPublicProfile(), token});
+    res.send({user, token});
+
   } catch (error) {
     res.status(400).send(error.message);
   }
@@ -77,8 +79,8 @@ userRouter.get('/users/me', auth, async (req, res) => {
 //logout
 userRouter.post('/users/logout', auth, async (req, res) => {
   try {
-    req.user.tokens = req.user.tokens.filter(token => {
-      return token.token !== req.token
+    req.user.tokens = req.user.tokens.filter(tk => {
+      return tk.token !== req.token;
     });
     await req.user.save();
 

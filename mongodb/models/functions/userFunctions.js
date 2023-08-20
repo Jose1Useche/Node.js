@@ -13,6 +13,21 @@ export const generateJWT =  async function() {
   
   return token;
 };
+
+//*********************************************************//
+//*******************Hiding Private Data*******************//
+export const getPublicProfile = function() {
+  const user = this;
+  const userObject = user.toObject();
+
+  delete userObject.password;
+  delete userObject.tokens;
+  delete userObject._id;
+
+  return userObject;
+};
+//*******************Hiding Private Data*******************//
+//*********************************************************//
   
 //Static functions
 export const login = async (email, password) => {

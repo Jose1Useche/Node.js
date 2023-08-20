@@ -83,5 +83,7 @@ userSchema.pre('updateOne', async function(next) {
 //Methods
 userSchema.methods.generateToken = uf.generateJWT;
 
+userSchema.methods.toJSON = uf.getPublicProfile;
+
 //Static functions
 userSchema.statics.validaIngresoUsuario = uf.login;
