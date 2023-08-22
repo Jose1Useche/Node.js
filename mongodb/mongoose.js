@@ -81,3 +81,16 @@ export const newUser = async (userParams, modelToDeal) => {
                     return err.message;
                 })
 }
+
+//New Task
+export const newTask = async (taskParams, modelToDeal) => {
+    const task = new modelToDeal({ description: taskParams.description });
+
+    return task.save()
+                .then(doc => {
+                    return doc;
+                })
+                .catch(err => {
+                    return err.message;
+                })
+}

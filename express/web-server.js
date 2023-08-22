@@ -11,6 +11,7 @@ import * as mongoose from '../mongodb/mongoose.js';
 // import * as models from '../mongodb/models/model.js';
 import { userRouter } from './routers/user.js';
 import { bookRouter } from './routers/book.js';
+import { taskRouter } from './routers/task.js';
 
 const app = express();
 
@@ -28,6 +29,7 @@ const app = express();
 
 app.use(userRouter);
 app.use(bookRouter);
+app.use(taskRouter);
 
 app.use(express.json());
 

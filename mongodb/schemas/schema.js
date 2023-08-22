@@ -1,7 +1,10 @@
-import { Schema } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 import validator from 'validator';
 import bcrypt from 'bcryptjs';
 import * as uf from '../models/functions/userFunctions.js';
+
+//******************************************************//
+//********************Product Schema********************//
 
 export const product = new Schema({
   name: String,
@@ -11,6 +14,12 @@ export const product = new Schema({
       default: 0
   }
 });
+
+//********************Product Schema********************//
+//******************************************************//
+
+//***************************************************//
+//********************Blog Schema********************//
 
 export const blogSchema = new Schema({
   title: String,
@@ -28,8 +37,20 @@ export const blogSchema = new Schema({
   }]
 });
 
+//********************Blog Schema********************//
+//***************************************************//
+
+//***************************************************//
+//********************Book Schema********************//
+
 // export const booksSchema = new Schema({}, { strict: false });
 export const booksSchema = new Schema({ any: {} });
+
+//********************Book Schema********************//
+//***************************************************//
+
+//***************************************************//
+//********************User Schema********************//
 
 export const userSchema = new Schema({
   userName: String,
@@ -62,6 +83,13 @@ export const userSchema = new Schema({
   }]
 });
 
+//Virtual Properties
+userSchema.virtual('tasks', {
+  ref: 'Tasks',
+  localField: '_id',
+  foreignField: 'owner'
+});
+
 //Middlewares
 userSchema.pre('save', async function(next) {
   if(this.isModified('password')) {
@@ -87,3 +115,29 @@ userSchema.methods.toJSON = uf.getPublicProfile;
 
 //Static functions
 userSchema.statics.validaIngresoUsuario = uf.login;
+
+//********************User Schema********************//
+//***************************************************//
+
+//***************************************************//
+//********************Task Schema********************//
+
+export const taskSchema = new Schema({
+  description: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  completed: {
+    type: Boolean,
+    default: false
+  },
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: 'Users'
+  }
+});
+
+//********************Task Schema********************//
+//***************************************************//

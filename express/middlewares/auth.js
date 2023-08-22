@@ -8,7 +8,7 @@ export const auth =  async (req, res, next) => {
         const token = req.header('Authorization').replace('Bearer ', '');
         const decoded = jwt.verify(token, 'palabraClaveSecreta');
         // const user = await User.findOne({ _id: decoded._id, 'tokens.token': token }, {password: 0, tokens: 0});
-        const user = await User.findOne({ _id: decoded._id, 'tokens.token': token }, {password: 0});
+        const user = await User.findOne({ _id: decoded._id, 'tokens.token': token });
 
         if (!user) {
             throw new Error();

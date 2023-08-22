@@ -23,6 +23,7 @@ export const getPublicProfile = function() {
   delete userObject.password;
   delete userObject.tokens;
   delete userObject._id;
+  delete userObject.__v;
 
   return userObject;
 };
