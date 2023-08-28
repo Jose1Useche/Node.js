@@ -81,7 +81,8 @@ export const userSchema = new Schema({
       required: true
     }
   }]
-});
+}
+,{ timestamps: true });
 
 //Virtual Properties
 userSchema.virtual('tasks', {

@@ -40,3 +40,34 @@ taskRouter.get('/usertasks', auth, async (req, res) => {
         res.status(400).send(error.message);
     }
 });
+
+taskRouter.get('/tasks/validatedUser', auth, async (req, res) => {
+    const match = {};
+    const sort = {};
+    const limit = 22;
+
+    if(req.query.completed) {
+        match.completed = req.query.completed === 'true';
+    }
+
+    if (req.query.sortBy) {
+        const parts = req.query.sortBy.split('_');
+        sort[parts[0]] = parts[1] === 'desc' ? -1 : 1;
+    }
+
+    try {
+        await req.user.populate({
+            path: 'tasks',
+            match,
+            options: {
+                limit,
+                skip: parseInt(req.query.skip) * limit,
+                sort
+            }
+        });
+
+        res.status(201).send(req.user.tasks);
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+});
