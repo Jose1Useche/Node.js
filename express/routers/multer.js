@@ -2,6 +2,7 @@ import multer from "multer";
 import express from "express";
 import { auth } from "../middlewares/auth.js";
 import { User } from "../../mongodb/models/model.js";
+import sharp from "sharp";
 
 export const multerRouter = new express.Router();
 
@@ -46,10 +47,12 @@ multerRouter.post('/upload', upload.single('upload'), (req, res) => {
 });
 
 multerRouter.post('/upload/me/avatar', auth, uploadImgProfile.single('uploadAvatar'), async (req, res) => {
-    req.user.avatar = req.file.buffer;
+    const buffer = await sharp(req.file.buffer).resize({ width: 250, height: 250 }).png().toBuffer();
+    req.user.avatar = buffer;
     await req.user.save();
-    let avatar = await User.findById("64e3c093460522209f0f865e", { avatar: 1 });
-    res.send(avatar);
+    // let avatar = await User.findById("64e3c093460522209f0f865e", { avatar: 1 });
+    // res.send(avatar);
+    res.send();
 }, (error, req, res, next) => {
     res.status(400).send({ error: error.message });
 });
