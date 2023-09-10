@@ -1,8 +1,11 @@
 import { mongoose } from 'mongoose';
+import { config } from "dotenv";
+
+config({ path: "../config/.env" })
 
 let uri = 
           'mongodb://127.0.0.1:27017/bookstore';
-          //'mongodb+srv://jose1useche:sVEjL5FtjthryxZY@cluster0.no7f8lk.mongodb.net/?retryWrites=true&w=majority';
+        // process.env.MONGODB_CONNECT;
 
 let db = mongoose.connection;
 
@@ -19,7 +22,7 @@ export const connectToDb = cbf => {
  
 //connection events 
 db.on('open', () => {
-    console.log('Database is connected to ', uri);
+    console.log('Database is connected!');
 })
 
 db.on('error', err => console.log('Error to connect: ',err));

@@ -1,13 +1,16 @@
 import * as models from '../../models/model.js';
 import bcrypt from 'bcryptjs';
 import jsonwebtoken from "jsonwebtoken";
+import { config } from "dotenv";
+
+config({ path: "../../config/.env" })
 
 const jwt = jsonwebtoken;
 
 //Methods
 export const generateJWT =  async function() {
   const user = this;
-  const token = jwt.sign({ _id: user._id }, 'palabraClaveSecreta');
+  const token = jwt.sign({ _id: user._id }, process.env.PRIVATE_KEY);
   user.tokens.push({ token }); // user.tokens = user.tokens.concat({ token });
   await user.save();
   

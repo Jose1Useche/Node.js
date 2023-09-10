@@ -1,9 +1,12 @@
 import { MongoClient } from "mongodb";
+import { config } from "dotenv";
+
+config({ path: "../config/.env" })
 
 let dbConnection;
 let uri = 
           'mongodb://127.0.0.1:27017/bookstore';
-        //   'mongodb+srv://jose1useche:sVEjL5FtjthryxZY@cluster0.no7f8lk.mongodb.net/?retryWrites=true&w=majority';
+        // process.env.MONGODB_CONNECT;
 
 export const connectToDb = cbf => {
     MongoClient.connect(uri)
