@@ -3,6 +3,7 @@ import { ObjectId } from 'mongodb';
 import * as mongoose from '../../mongodb/mongoose.js';
 import { User } from "../../mongodb/models/model.js";
 import { auth } from "../middlewares/auth.js";
+import * as snGrid from '../emails/sendgrid.js';
 
 export const userRouter = new express.Router();
 userRouter.use(express.json());
@@ -11,6 +12,7 @@ userRouter.use(express.json());
 userRouter.post('/users', (req, res) => {
     mongoose.newUser(req.body, User)
       .then(result => {
+        snGrid.sendWelcomeEmail(result.email, result.userName);
         res.status(201).json(result);
       })
       .catch(() => {
@@ -35,10 +37,13 @@ userRouter.patch('/users/:id', (req, res) => {
   }
 });
 
-userRouter.delete('/users/:id', (req, res) => {
+userRouter.delete('/users/:id', async (req, res) => {
   if (ObjectId.isValid(req.params.id)) {
+      let user = await User.findById(req.params.id);
+      
       mongoose.deleteDocument(req.params.id, User)
       .then(result => {
+      snGrid.deleteAccount(user.email, user.userName);
       res.status(200).json(result);
       })
       .catch(() => {
